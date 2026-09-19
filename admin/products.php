@@ -4,6 +4,11 @@ require __DIR__ . '/../includes/auth.php';
 requireRole(['admin']);
 
 $message = '';
+$selectedCategoryId = (int) ($_GET['category_id'] ?? 0);
+
+if (isset($_GET['category_added'])) {
+    $message = 'Category added. It is selected below.';
+}
 
 try {
     $pdo = getDbConnection();
@@ -55,8 +60,8 @@ try {
         }
     }
 
-    $categories = $pdo->query('SELECT id, name FROM categories ORDER BY name ASC')->fetchAll();
-    $products = $pdo->query('SELECT p.*, c.name AS category_name FROM products p LEFT JOIN categories c ON c.id = p.category_id ORDER BY p.id DESC')->fetchAll();
+    $categories = $pdo->query('SELECT CategoryID AS id, CategoryName AS name FROM categories ORDER BY CategoryName ASC')->fetchAll();
+    $products = $pdo->query('SELECT p.*, c.CategoryName AS category_name FROM products p LEFT JOIN categories c ON c.CategoryID = p.category_id ORDER BY p.id DESC')->fetchAll();
 } catch (Throwable $e) {
     $categories = [];
     $products = [];
@@ -105,6 +110,7 @@ try {
                 <h1>Admin Products</h1>
             </div>
             <div class="nav">
+                <a class="link" href="categories.php">Add category</a>
                 <a class="link" href="dashboard.php">Dashboard</a>
                 <a class="link" href="orders.php">Orders</a>
                 <a class="link" href="../logout.php">Logout</a>
@@ -114,8 +120,9 @@ try {
         <?php if ($message): ?><div class="message"><?php echo htmlspecialchars($message); ?></div><?php endif; ?>
 
         <div class="grid">
-            <section class="panel">
+            <section class="panel" id="product-form">
                 <h2>Add / Update Product</h2>
+                <p><a class="link" href="categories.php">Need a new category?</a></p>
                 <form method="post" action="products.php" class="form-grid">
                     <input type="hidden" name="action" value="save_product" />
                     <input type="hidden" name="product_id" value="0" />
@@ -125,7 +132,7 @@ try {
                         <select name="category_id" required>
                             <option value="">Select a category</option>
                             <?php foreach ($categories as $category): ?>
-                                <option value="<?php echo (int) $category['id']; ?>"><?php echo htmlspecialchars($category['name']); ?></option>
+                                <option value="<?php echo (int) $category['id']; ?>" <?php echo ((int) $category['id'] === $selectedCategoryId) ? 'selected' : ''; ?>><?php echo htmlspecialchars($category['name']); ?></option>
                             <?php endforeach; ?>
                         </select>
                     </label>
@@ -141,7 +148,7 @@ try {
                     </label>
 
                     <label>
-                        Price (Kes)
+                        Price (PHP)
                         <input type="number" name="price" min="0" step="0.01" placeholder="0.00" required />
                     </label>
 
@@ -187,7 +194,7 @@ try {
                                         <span style="color:var(--muted); font-size:0.85rem;"><?php echo htmlspecialchars($product['description'] ?: 'No description'); ?></span>
                                     </td>
                                     <td><?php echo htmlspecialchars($product['category_name'] ?: 'Uncategorized'); ?></td>
-                                    <td>Kes.<?php echo number_format((float) $product['price'], 0); ?></td>
+                                    <td>₱<?php echo number_format((float) $product['price'], 0); ?></td>
                                     <td><span class="badge <?php echo htmlspecialchars((string) $product['status']); ?>"><?php echo htmlspecialchars($product['status']); ?></span></td>
                                     <td>
                                         <div class="mini-actions">

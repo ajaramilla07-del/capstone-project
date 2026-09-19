@@ -92,6 +92,16 @@ button, input, select, textarea {
     font-size: 1.02rem;
 }
 
+.profile-edit {
+    color: var(--brand-dark);
+    font-size: 0.86rem;
+    text-decoration: none;
+}
+
+.profile-edit:hover {
+    text-decoration: underline;
+}
+
 .nav-menu {
     display: flex;
     flex-direction: column;
@@ -181,9 +191,25 @@ button, input, select, textarea {
 
 .page-body {
     display: grid;
-    grid-template-columns: minmax(0, 1.6fr) minmax(260px, 0.9fr);
+    grid-template-columns: 1fr;
     gap: 22px;
     align-items: start;
+}
+
+.page-body.full-width {
+    grid-template-columns: 1fr;
+}
+
+.menu-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 22px;
+    align-items: start;
+}
+
+.menu-checkout {
+    width: min(360px, 100%);
+    justify-self: end;
 }
 
 .section-panel {
@@ -557,6 +583,15 @@ button, input, select, textarea {
     .cart-grid,
     .checkout-grid {
         grid-template-columns: 1fr;
+    }
+
+    .menu-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .menu-checkout {
+        position: static;
+        justify-self: stretch;
     }
 }
 

@@ -11,7 +11,7 @@ $pageContent = <<<'HTML'
             <div class="food-thumb" style="background-image:url('https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=900&q=80');"></div>
             <div class="food-meta">
                 <span>Rice bowl</span>
-                <span class="food-price">Kes.900</span>
+                <span class="food-price">₱900</span>
             </div>
         </div>
 
@@ -19,7 +19,7 @@ $pageContent = <<<'HTML'
             <div class="food-thumb" style="background-image:url('https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80');"></div>
             <div class="food-meta">
                 <span>Burger</span>
-                <span class="food-price">Kes.500</span>
+                <span class="food-price">₱500</span>
             </div>
         </div>
 
@@ -27,7 +27,7 @@ $pageContent = <<<'HTML'
             <div class="food-thumb" style="background-image:url('https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=900&q=80');"></div>
             <div class="food-meta">
                 <span>Pizza</span>
-                <span class="food-price">Kes.1000</span>
+                <span class="food-price">₱1000</span>
             </div>
         </div>
     </div>

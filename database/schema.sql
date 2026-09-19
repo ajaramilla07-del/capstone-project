@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS products (
     status ENUM('active', 'inactive') NOT NULL DEFAULT 'active',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    UNIQUE KEY uq_products_category_name (category_id, name),
     FOREIGN KEY (category_id) REFERENCES categories(id)
 );
 
@@ -35,6 +36,7 @@ CREATE TABLE IF NOT EXISTS delivery_coverages (
     area_name VARCHAR(120) NOT NULL,
     rider_id INT NULL,
     status ENUM('active', 'inactive') NOT NULL DEFAULT 'active',
+    UNIQUE KEY uq_delivery_coverages_area (area_name),
     FOREIGN KEY (rider_id) REFERENCES users(id)
 );
 
@@ -66,7 +68,7 @@ CREATE TABLE IF NOT EXISTS order_details (
 
 INSERT INTO users (name, email, password, role)
 VALUES
-('Admin User', 'admin@example.com', '$2y$12$nxDRjge13ZwLIcYnx/v0e.4CIdPqfHxRnsQk5ZhRIwUKCpzmFFNjC', 'admin'),
+('Admin User', 'admin@example.com', '$2y$12$dqw.4.tEjedInxn8lz6EyuM.7DWwnqyzmsWOwdjm9RRsCl36krFqi', 'admin'),
 ('Staff User', 'staff@example.com', '$2y$12$nxDRjge13ZwLIcYnx/v0e.4CIdPqfHxRnsQk5ZhRIwUKCpzmFFNjC', 'staff'),
 ('Rider User', 'rider@example.com', '$2y$12$nxDRjge13ZwLIcYnx/v0e.4CIdPqfHxRnsQk5ZhRIwUKCpzmFFNjC', 'rider'),
 ('Customer User', 'customer@example.com', '$2y$12$nxDRjge13ZwLIcYnx/v0e.4CIdPqfHxRnsQk5ZhRIwUKCpzmFFNjC', 'customer')

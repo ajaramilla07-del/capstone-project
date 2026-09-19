@@ -34,6 +34,7 @@ if (!isset($navItems)) {
             <div class="profile-block">
                 <div class="avatar"><?php echo htmlspecialchars($customerInitial); ?></div>
                 <div class="profile-name"><?php echo htmlspecialchars($customerName); ?></div>
+                <a class="profile-edit" href="settings.php">Edit profile</a>
             </div>
 
             <nav class="nav-menu" aria-label="Customer navigation">
@@ -60,7 +61,7 @@ if (!isset($navItems)) {
                 </div>
             </header>
 
-            <div class="page-body">
+            <div class="page-body <?php echo htmlspecialchars($pageBodyClass ?? ''); ?>">
                 <?php echo $pageContent; ?>
             </div>
         </main>

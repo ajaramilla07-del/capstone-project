@@ -841,7 +841,7 @@ try {
                     </div>
 
                     <div class="metric-card">
-                        <div class="metric-number">Kes.<?php echo number_format((float) $stats['revenue'], 0); ?></div>
+                        <div class="metric-number">₱<?php echo number_format((float) $stats['revenue'], 0); ?></div>
                         <div class="metric-label">Revenue</div>
                     </div>
                 </section>
@@ -877,7 +877,7 @@ try {
                     <div class="chart-card">
                         <div class="chart-header">
                             <span>7-day revenue</span>
-                            <strong>Kes.<?php echo number_format((float) array_sum(array_map(static fn($day) => (float) ($day['revenue'] ?? 0), $revenueTrend)), 0); ?></strong>
+                            <strong>₱<?php echo number_format((float) array_sum(array_map(static fn($day) => (float) ($day['revenue'] ?? 0), $revenueTrend)), 0); ?></strong>
                         </div>
                         <?php
                         $maxRevenue = 0;
@@ -905,7 +905,7 @@ try {
                     <div class="chart-card">
                         <div class="chart-header">
                             <span>Today</span>
-                            <strong>Kes.<?php echo number_format((float) $todaySummary['revenue'], 0); ?></strong>
+                            <strong>₱<?php echo number_format((float) $todaySummary['revenue'], 0); ?></strong>
                         </div>
                         <div class="order-list">
                             <div class="order-row">
@@ -920,14 +920,14 @@ try {
                                     <strong>Average order</strong>
                                     <span class="muted">Per transaction</span>
                                 </div>
-                                <strong>Kes.<?php echo number_format((float) $todaySummary['average'], 0); ?></strong>
+                                <strong>₱<?php echo number_format((float) $todaySummary['average'], 0); ?></strong>
                             </div>
                             <div class="order-row">
                                 <div class="order-main">
                                     <strong>Revenue</strong>
                                     <span class="muted">Total today</span>
                                 </div>
-                                <strong>Kes.<?php echo number_format((float) $todaySummary['revenue'], 0); ?></strong>
+                                <strong>₱<?php echo number_format((float) $todaySummary['revenue'], 0); ?></strong>
                             </div>
                         </div>
                     </div>
@@ -954,7 +954,7 @@ try {
                                             <span class="muted"><?php echo htmlspecialchars($order['area_name'] ?: 'Delivery area'); ?> · <?php echo htmlspecialchars(date('d M Y', strtotime($order['created_at']))); ?></span>
                                         </div>
                                         <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end;">
-                                            <strong>Kes.<?php echo number_format((float) $order['total_amount'], 0); ?></strong>
+                                            <strong>₱<?php echo number_format((float) $order['total_amount'], 0); ?></strong>
                                             <span class="status-pill <?php echo htmlspecialchars($statusClass); ?>"><?php echo htmlspecialchars($statusValue); ?></span>
                                         </div>
                                     </div>
@@ -978,7 +978,7 @@ try {
                                             <div class="rider-name"><?php echo htmlspecialchars($rider['name'] ?? 'Rider'); ?></div>
                                             <span class="muted"><?php echo (int) $rider['deliveries']; ?> deliveries</span>
                                         </div>
-                                        <strong>Kes.<?php echo number_format((float) $rider['revenue'], 0); ?></strong>
+                                        <strong>₱<?php echo number_format((float) $rider['revenue'], 0); ?></strong>
                                     </div>
                                 <?php endforeach; ?>
                             </div>
@@ -1002,7 +1002,7 @@ try {
                                             <strong><?php echo htmlspecialchars($product['name']); ?></strong>
                                             <span class="muted"><?php echo (int) $product['sold']; ?> sold</span>
                                         </div>
-                                        <span class="meta-tag">Kes.<?php echo number_format((float) $product['revenue'], 0); ?></span>
+                                        <span class="meta-tag">₱<?php echo number_format((float) $product['revenue'], 0); ?></span>
                                     </div>
                                 <?php endforeach; ?>
                             </div>
@@ -1079,7 +1079,7 @@ try {
                                     <strong>Revenue total</strong>
                                     <span class="muted">All recorded orders</span>
                                 </div>
-                                <strong>Kes.<?php echo number_format((float) $stats['revenue'], 0); ?></strong>
+                                <strong>₱<?php echo number_format((float) $stats['revenue'], 0); ?></strong>
                             </div>
                         </div>
                     </div>

@@ -72,7 +72,7 @@ ob_start();
                         <div class="thumb" style="background-image:url('<?php echo htmlspecialchars($item['image'] ?: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80'); ?>');"></div>
                         <div>
                             <div style="font-weight:800; margin-bottom:6px;"><?php echo htmlspecialchars($item['name']); ?></div>
-                            <div style="color:#7d7274;">Kes.<?php echo number_format((float)$item['price'], 0); ?></div>
+                            <div style="color:#7d7274;">₱<?php echo number_format((float)$item['price'], 0); ?></div>
                         </div>
                         <div class="qty-box">
                             <form method="post" action="cart.php" style="display:flex; align-items:center; gap:10px;">
@@ -89,7 +89,7 @@ ob_start();
                                 <button type="submit" aria-label="Increase quantity">+</button>
                             </form>
                         </div>
-                        <div class="item-total">Kes.<?php echo number_format((float)$item['line_total'], 0); ?></div>
+                        <div class="item-total">₱<?php echo number_format((float)$item['line_total'], 0); ?></div>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -97,12 +97,12 @@ ob_start();
             <aside class="summary-card">
                 <h3>Order summary</h3>
                 <div class="summary-list">
-                    <div class="summary-row"><span>Subtotal</span><strong>Kes.<?php echo number_format((float)$total, 0); ?></strong></div>
-                    <div class="summary-row"><span>Delivery</span><strong>Kes.250</strong></div>
-                    <div class="summary-row"><span>VAT</span><strong>Kes.180</strong></div>
+                    <div class="summary-row"><span>Subtotal</span><strong>₱<?php echo number_format((float)$total, 0); ?></strong></div>
+                    <div class="summary-row"><span>Delivery</span><strong>₱250</strong></div>
+                    <div class="summary-row"><span>VAT</span><strong>₱180</strong></div>
                 </div>
                 <div class="summary-totals">
-                    <div class="summary-row"><span>Total</span><strong class="amount">Kes.<?php echo number_format((float)($total + 250 + 180), 0); ?></strong></div>
+                    <div class="summary-row"><span>Total</span><strong class="amount">₱<?php echo number_format((float)($total + 250 + 180), 0); ?></strong></div>
                     <a href="checkout.php" class="primary-btn" style="display:inline-block; text-align:center; text-decoration:none;">Proceed to checkout</a>
                 </div>
             </aside>

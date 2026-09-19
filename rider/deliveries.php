@@ -166,7 +166,7 @@ $deliveries = $stmt->fetchAll();
                                 <p><?php echo htmlspecialchars($delivery['area_name'] ?: 'Delivery area'); ?> · <?php echo htmlspecialchars($delivery['delivery_address'] ?: 'No address'); ?></p>
                             </div>
                             <div>
-                                <strong>Kes.<?php echo number_format((float) $delivery['total_amount'], 0); ?></strong>
+                                <strong>₱<?php echo number_format((float) $delivery['total_amount'], 0); ?></strong>
                                 <p><?php echo htmlspecialchars($delivery['status'] ?? 'Pending'); ?></p>
                             </div>
                         </div>

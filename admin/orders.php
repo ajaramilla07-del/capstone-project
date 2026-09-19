@@ -79,7 +79,7 @@ try {
                                 <td><?php echo htmlspecialchars($order['customer_name'] ?? 'Customer'); ?></td>
                                 <td><?php echo htmlspecialchars($order['area_name'] ?: 'N/A'); ?></td>
                                 <td><?php echo htmlspecialchars($order['rider_name'] ?: 'Unassigned'); ?></td>
-                                <td>Kes.<?php echo number_format((float) $order['total_amount'], 0); ?></td>
+                                <td>₱<?php echo number_format((float) $order['total_amount'], 0); ?></td>
                                 <td><span class="badge <?php echo htmlspecialchars($statusClass); ?>"><?php echo htmlspecialchars($statusValue); ?></span></td>
                             </tr>
                         <?php endforeach; ?>

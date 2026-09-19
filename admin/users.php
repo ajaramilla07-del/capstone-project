@@ -3,11 +3,45 @@ require __DIR__ . '/../config/db.php';
 require __DIR__ . '/../includes/auth.php';
 requireRole(['admin']);
 
+$message = '';
+$messageType = 'success';
+
 try {
     $pdo = getDbConnection();
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $name = trim((string) ($_POST['name'] ?? ''));
+        $email = trim((string) ($_POST['email'] ?? ''));
+        $password = (string) ($_POST['password'] ?? '');
+        $role = $_POST['role'] ?? '';
+
+        if ($name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($password) < 6 || !in_array($role, ['staff', 'rider'], true)) {
+            $message = 'Enter a valid name, email, password of at least 6 characters, and role.';
+            $messageType = 'error';
+        } else {
+            try {
+                $stmt = $pdo->prepare('INSERT INTO users (name, email, password, role) VALUES (:name, :email, :password, :role)');
+                $stmt->execute([
+                    ':name' => $name,
+                    ':email' => $email,
+                    ':password' => password_hash($password, PASSWORD_DEFAULT),
+                    ':role' => $role,
+                ]);
+                $message = ucfirst($role) . ' account created successfully.';
+            } catch (PDOException $exception) {
+                $message = $exception->getCode() === '23000'
+                    ? 'That email address is already registered.'
+                    : 'Unable to create the account right now.';
+                $messageType = 'error';
+            }
+        }
+    }
+
     $users = $pdo->query('SELECT id, name, email, role, created_at FROM users ORDER BY created_at DESC')->fetchAll();
 } catch (Throwable $e) {
     $users = [];
+    $message = 'Unable to load users right now.';
+    $messageType = 'error';
 }
 ?>
 <!DOCTYPE html>
@@ -24,6 +58,13 @@ try {
         .nav { display: flex; gap: 10px; flex-wrap: wrap; }
         .link { display: inline-block; padding: 10px 14px; border-radius: 10px; text-decoration: none; background: #fff; border: 1px solid rgba(17,17,17,0.08); color: #111; font-weight: 700; }
         .panel { background: #fff; border: 1px solid rgba(17,17,17,0.08); border-radius: 18px; padding: 20px; box-shadow: 0 12px 32px rgba(17,17,17,0.04); }
+        .form-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; align-items: end; margin-bottom: 20px; }
+        label { display: grid; gap: 6px; font-weight: 700; }
+        input, select, button { width: 100%; padding: 11px 12px; border: 1px solid rgba(17,17,17,0.12); border-radius: 10px; font: inherit; }
+        button { background: linear-gradient(135deg, #5ca66e, #3f8a56); color: #fff; border: none; font-weight: 700; cursor: pointer; }
+        .message { padding: 10px 12px; border-radius: 10px; margin-bottom: 16px; font-weight: 600; }
+        .message.success { background: #eef7f0; color: #184d2d; }
+        .message.error { background: #fff1f0; color: #8f2424; }
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 12px 8px; border-bottom: 1px solid rgba(17,17,17,0.08); text-align: left; }
         .badge { display: inline-block; padding: 5px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; }
@@ -31,6 +72,7 @@ try {
         .badge.customer { background: #e0f2fe; color: #0f4c81; }
         .badge.rider { background: #fef3c7; color: #7a5a00; }
         .badge.staff { background: #f3e8ff; color: #5b2fa4; }
+        @media (max-width: 800px) { .form-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -46,6 +88,31 @@ try {
         </div>
 
         <div class="panel">
+            <h2>Create staff or rider account</h2>
+            <?php if ($message): ?><div class="message <?php echo htmlspecialchars($messageType); ?>"><?php echo htmlspecialchars($message); ?></div><?php endif; ?>
+            <form method="post" action="users.php" class="form-grid">
+                <label>
+                    Full name
+                    <input type="text" name="name" required />
+                </label>
+                <label>
+                    Email address
+                    <input type="email" name="email" required />
+                </label>
+                <label>
+                    Temporary password
+                    <input type="password" name="password" minlength="6" required />
+                </label>
+                <label>
+                    Role
+                    <select name="role" required>
+                        <option value="staff">Staff</option>
+                        <option value="rider">Delivery rider</option>
+                    </select>
+                </label>
+                <button type="submit">Create account</button>
+            </form>
+
             <table>
                 <thead>
                     <tr>

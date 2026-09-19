@@ -8,7 +8,7 @@ $pageContent = <<<'HTML'
 
     <div class="wallet-panel">
         <div class="wallet-note">Balance</div>
-        <div class="wallet-balance">Kes.15,000.48</div>
+        <div class="wallet-balance">₱15,000.48</div>
         <div class="wallet-note">Top up to order more food</div>
         <button class="primary-btn" type="button">Top up</button>
     </div>

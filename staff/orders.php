@@ -160,7 +160,7 @@ $orders = $pdo->query('SELECT o.id, o.status, o.total_amount, o.created_at, c.na
                                 <p><?php echo htmlspecialchars($order['area_name'] ?: 'Delivery area'); ?> · <?php echo htmlspecialchars($order['delivery_address'] ?: 'No address'); ?></p>
                             </div>
                             <div>
-                                <strong>Kes.<?php echo number_format((float) $order['total_amount'], 0); ?></strong>
+                                <strong>₱<?php echo number_format((float) $order['total_amount'], 0); ?></strong>
                                 <p><?php echo htmlspecialchars(date('d M Y', strtotime($order['created_at']))); ?></p>
                             </div>
                         </div>

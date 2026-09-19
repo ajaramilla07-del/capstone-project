@@ -47,7 +47,7 @@ try {
         <div class="panel">
             <div class="stat-grid">
                 <div class="stat">
-                    <strong>Kes.<?php echo number_format((float) array_sum(array_map(static fn($row) => (float) ($row['revenue'] ?? 0), $salesData)), 0); ?></strong>
+                    <strong>₱<?php echo number_format((float) array_sum(array_map(static fn($row) => (float) ($row['revenue'] ?? 0), $salesData)), 0); ?></strong>
                     <span>Total sales</span>
                 </div>
                 <div class="stat">
@@ -55,7 +55,7 @@ try {
                     <span>Orders</span>
                 </div>
                 <div class="stat">
-                    <strong>Kes.<?php echo number_format((float) (count($salesData) > 0 ? array_sum(array_map(static fn($row) => (float) ($row['revenue'] ?? 0), $salesData)) / count($salesData) : 0), 0); ?></strong>
+                    <strong>₱<?php echo number_format((float) (count($salesData) > 0 ? array_sum(array_map(static fn($row) => (float) ($row['revenue'] ?? 0), $salesData)) / count($salesData) : 0), 0); ?></strong>
                     <span>Avg/day</span>
                 </div>
             </div>
@@ -76,7 +76,7 @@ try {
                             <tr>
                                 <td><?php echo htmlspecialchars(date('d M Y', strtotime($row['date']))); ?></td>
                                 <td><?php echo (int) $row['orders']; ?></td>
-                                <td>Kes.<?php echo number_format((float) $row['revenue'], 0); ?></td>
+                                <td>₱<?php echo number_format((float) $row['revenue'], 0); ?></td>
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>

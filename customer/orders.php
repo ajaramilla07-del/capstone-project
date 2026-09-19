@@ -36,7 +36,7 @@ ob_start();
                         </span>
                     </div>
                     <div><span class="status-badge <?php echo htmlspecialchars($statusClass); ?>"><?php echo htmlspecialchars($statusValue); ?></span></div>
-                    <div><strong>Kes.<?php echo number_format((float) $order['total_amount'], 0); ?></strong></div>
+                    <div><strong>₱<?php echo number_format((float) $order['total_amount'], 0); ?></strong></div>
                 </div>
             <?php endforeach; ?>
         </div>

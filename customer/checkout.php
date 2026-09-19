@@ -165,15 +165,15 @@ ob_start();
                         ?>
                             <div class="summary-row">
                                 <span><?php echo htmlspecialchars($productInfo['name']); ?> x <?php echo (int) $qty; ?></span>
-                                <strong>Kes.<?php echo number_format($itemTotal, 0); ?></strong>
+                                <strong>₱<?php echo number_format($itemTotal, 0); ?></strong>
                             </div>
                         <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
                 <div class="summary-totals">
-                    <div class="summary-row"><span>Subtotal</span><strong>Kes.<?php echo number_format((float)$subtotal, 0); ?></strong></div>
-                    <div class="summary-row"><span>Delivery</span><strong>Kes.250</strong></div>
-                    <div class="summary-row"><span>Total</span><strong class="amount">Kes.<?php echo number_format((float)$total, 0); ?></strong></div>
+                    <div class="summary-row"><span>Subtotal</span><strong>₱<?php echo number_format((float)$subtotal, 0); ?></strong></div>
+                    <div class="summary-row"><span>Delivery</span><strong>₱250</strong></div>
+                    <div class="summary-row"><span>Total</span><strong class="amount">₱<?php echo number_format((float)$total, 0); ?></strong></div>
                 </div>
             </aside>
         </div>
