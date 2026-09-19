@@ -2,7 +2,7 @@
 
 $host = getenv('DB_HOST') ?: '127.0.0.1';
 $user = getenv('DB_USER') ?: 'root';
-$pass = getenv('DB_PASS') ?: 'Alfonj112504';
+$pass = getenv('DB_PASS') ?: '';
 
 $serverDsn = sprintf('mysql:host=%s;charset=utf8mb4', $host);
 $serverPdo = new PDO($serverDsn, $user, $pass, [
