@@ -152,12 +152,6 @@ $pageTitle = 'Landing Page';
         <header class="topbar">
             <div class="brand">Tasty <span>Food</span></div>
 
-            <nav class="nav" aria-label="Main navigation">
-                <a href="#">Home</a>
-                <a href="#">About</a>
-                <a href="#">Contacts</a>
-            </nav>
-
             <div class="top-actions">
                 <div class="top-icon" aria-label="Search">⌕</div>
                 <div class="top-icon" aria-label="Cart">🛒</div>
@@ -171,14 +165,8 @@ $pageTitle = 'Landing Page';
         <main class="hero">
             <section class="hero-copy">
                 <h1 class="hero-title">Order Your Favorite Meals and Experience Fast, Reliable Delivery.</h1>
-                <p class="hero-text">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis.
-                </p>
+              
 
-                <div class="hero-actions">
-                    <a href="#" class="cta-primary show-login">Order Now</a>
-                    <a href="#" class="cta-secondary show-login">Order Process</a>
-                </div>
             </section>
 
             <section class="hero-visual" aria-label="Food illustration">
@@ -196,28 +184,7 @@ $pageTitle = 'Landing Page';
             </section>
         </main>
 
-        <section class="stats" aria-label="Highlights">
-            <div class="stat-box">
-                <div class="stat-value"><strong>12+</strong> Years Of Activity</div>
-                <div class="stat-text">Lorem ipsum dolor sit amet, amet.</div>
-            </div>
-
-            <div class="stat-box">
-                <div class="stat-value"><strong>3.2M+</strong> Customers</div>
-                <div class="stat-text">Lorem ipsum dolor sit amet, amet consectetu.</div>
-            </div>
-
-            <div class="stat-box">
-                <div class="stat-value"><strong>5.0</strong> Rating</div>
-                <div class="stat-text">Lorem ipsum dolor sit amet, amet dolor sit.</div>
-            </div>
-
-            <div class="stat-box">
-                <div class="stat-value"><strong>99%</strong> Customer Satisfaction</div>
-                <div class="stat-text">Lorem ipsum amet dolor sit amet, consectet amet.</div>
-            </div>
-        </section>
-
+     
         <section class="bottom-strip">
             <div class="bottom-strip-inner">
                 <h2 class="bottom-title">Explore Our Delights: View the Menu Now<span class="underline"></span></h2>

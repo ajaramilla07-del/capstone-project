@@ -52,14 +52,6 @@ if (!isset($navItems)) {
                     <span class="search-ico">⌕</span>
                     <input type="text" placeholder="Search for food" />
                 </div>
-
-                <div class="top-actions">
-                    <div class="location-pill">
-                        <span class="location-icon">◉</span>
-                        <span>Parklands</span>
-                    </div>
-                    <button class="premium-btn">Go premium</button>
-                </div>
             </header>
 
             <div class="page-body">

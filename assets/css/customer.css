@@ -140,7 +140,7 @@ button, input, select, textarea {
 
 .search-wrap {
     flex: 1;
-    max-width: 56%;
+    max-width: 100%;
     position: relative;
 }
 
@@ -163,30 +163,6 @@ button, input, select, textarea {
     font-size: 1.25rem;
 }
 
-.top-actions {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
-
-.location-pill {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(255,255,255,0.35);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 10px 14px;
-    font-weight: 600;
-    color: var(--text);
-}
-
-.location-icon {
-    font-size: 0.8rem;
-    color: var(--brand-dark);
-}
-
-.premium-btn,
 .primary-btn,
 .secondary-btn,
 .ghost-btn {
@@ -197,18 +173,10 @@ button, input, select, textarea {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.premium-btn:hover,
 .primary-btn:hover,
 .secondary-btn:hover,
 .ghost-btn:hover {
     transform: translateY(-1px);
-}
-
-.premium-btn {
-    background: linear-gradient(135deg, var(--brand), var(--brand-dark));
-    color: #ffffff;
-    padding: 11px 18px;
-    box-shadow: 0 10px 18px rgba(92, 166, 110, 0.18);
 }
 
 .page-body {
@@ -601,7 +569,6 @@ button, input, select, textarea {
     }
 
     .search-wrap { max-width: 100%; }
-    .top-actions { justify-content: space-between; }
 
     .food-grid { grid-template-columns: repeat(2, minmax(140px, 1fr)); }
 

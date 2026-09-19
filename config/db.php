@@ -10,7 +10,7 @@ function getDbConnection(): PDO
     }
 
     $user = getenv('DB_USER') ?: 'root';
-    $pass = getenv('DB_PASS') ?: '';
+    $pass = getenv('DB_PASS') ?: 'Alfonj112504';
 
     $dsn = sprintf('mysql:host=%s;dbname=%s;charset=utf8mb4', $host, $dbName);
 
