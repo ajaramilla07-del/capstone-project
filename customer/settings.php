@@ -1,8 +1,14 @@
 <?php
+require_once __DIR__ . '/../includes/auth.php';
+
+$customer = currentUser() ?? [];
+$customerName = htmlspecialchars((string) ($customer['name'] ?? ''));
+$customerEmail = htmlspecialchars((string) ($customer['email'] ?? ''));
+
 $pageTitle = 'Settings';
 $activePage = 'settings.php';
 
-$pageContent = <<<'HTML'
+$pageContent = <<<HTML
 <div class="section-panel">
     <h1 class="page-header">Settings</h1>
 
@@ -10,11 +16,11 @@ $pageContent = <<<'HTML'
         <div class="form-grid">
             <label>
                 Full name
-                <input type="text" value="Alia Mukami" />
+                <input type="text" value="$customerName" />
             </label>
             <label>
                 Email address
-                <input type="email" value="alia@example.com" />
+                <input type="email" value="$customerEmail" />
             </label>
             <label>
                 Phone number

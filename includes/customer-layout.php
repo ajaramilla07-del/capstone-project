@@ -1,4 +1,10 @@
 <?php
+require_once __DIR__ . '/auth.php';
+
+$customer = currentUser() ?? [];
+$customerName = trim((string) ($customer['name'] ?? 'Customer'));
+$customerInitial = strtoupper(substr($customerName, 0, 1));
+
 if (!isset($navItems)) {
     $navItems = [
         ['label' => 'Home', 'link' => 'menu.php', 'icon' => 'home'],
@@ -26,8 +32,8 @@ if (!isset($navItems)) {
             <div class="brand" style="color: #2c5c32;">Foody.</div>
 
             <div class="profile-block">
-                <div class="avatar">A</div>
-                <div class="profile-name">Alia Mukami</div>
+                <div class="avatar"><?php echo htmlspecialchars($customerInitial); ?></div>
+                <div class="profile-name"><?php echo htmlspecialchars($customerName); ?></div>
             </div>
 
             <nav class="nav-menu" aria-label="Customer navigation">
