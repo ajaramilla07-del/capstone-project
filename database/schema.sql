@@ -78,11 +78,19 @@ ON DUPLICATE KEY UPDATE name = VALUES(name);
 
 INSERT INTO products (category_id, name, description, price, image, status)
 VALUES
-(1, 'Pizza', 'Classic pizza', 1000.00, 'https://images.unsplash.com/photo-1513104890138-7c749659a591', 'active'),
-(2, 'Salad', 'Fresh salad', 800.00, 'https://images.unsplash.com/photo-1546793665-c74683f339c1', 'active'),
-(3, 'Burger', 'Tasty burger', 500.00, 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd', 'active'),
-(4, 'Sushi', 'Fresh sushi platter', 1500.00, 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c', 'active')
-ON DUPLICATE KEY UPDATE name = name;
+(1, 'Classic Pizza', 'Loaded with mozzarella, tomato sauce, and herbs.', 450.00, 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80', 'active'),
+(1, 'Margherita Pizza', 'Classic mozzarella and basil pizza.', 470.00, 'https://images.unsplash.com/photo-1548365328-9f547fb9587c?auto=format&fit=crop&w=800&q=80', 'active'),
+(1, 'BBQ Chicken Pizza', 'Smoky BBQ chicken with peppers and cheese.', 520.00, 'https://images.unsplash.com/photo-1552539618-7eec9b4d9f5a?auto=format&fit=crop&w=800&q=80', 'active'),
+(2, 'Tuna Seafood Bowl', 'Fresh seafood bowl with rice, greens, and savory sauce.', 520.00, 'https://images.unsplash.com/photo-1559847844-5315695dadae?auto=format&fit=crop&w=800&q=80', 'active'),
+(2, 'Shrimp Platter', 'Crispy shrimp with side salad and signature sauce.', 560.00, 'https://images.unsplash.com/photo-1562967916-eb82221dfb92?auto=format&fit=crop&w=800&q=80', 'active'),
+(2, 'Grilled Salmon', 'Flame-grilled salmon with lemon butter glaze.', 610.00, 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=800&q=80', 'active'),
+(3, 'Beef Burger', 'Juicy beef burger with crisp lettuce and cheese.', 390.00, 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80', 'active'),
+(3, 'Chicken Burger', 'Crispy chicken burger with cheddar and slaw.', 410.00, 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=800&q=80', 'active'),
+(3, 'Double Cheeseburger', 'Stacked cheese burger with caramelized onions.', 480.00, 'https://images.unsplash.com/photo-1561758033-d89a9ad46330?auto=format&fit=crop&w=800&q=80', 'active'),
+(4, 'Iced Coffee', 'Refreshing iced coffee for a cooling break.', 220.00, 'https://images.unsplash.com/photo-1497636577773-f1231844b336?auto=format&fit=crop&w=800&q=80', 'active'),
+(4, 'Fresh Lemonade', 'Fresh homemade lemonade with citrus aroma.', 180.00, 'https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=800&q=80', 'active'),
+(4, 'Mango Shake', 'Creamy mango shake blended with tropical flavor.', 240.00, 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=800&q=80', 'active')
+ON DUPLICATE KEY UPDATE name = VALUES(name), description = VALUES(description), price = VALUES(price), image = VALUES(image), category_id = VALUES(category_id), status = VALUES(status);
 
 INSERT INTO delivery_coverages (area_name, rider_id, status)
 VALUES
