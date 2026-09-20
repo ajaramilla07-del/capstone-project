@@ -193,7 +193,7 @@ try {
                                     <th>Coverage location</th>
                                     <th>Assigned rider</th>
                                     <th>Status</th>
-                                    <th>Save assignment</th>
+                                    <th>Save</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -204,7 +204,6 @@ try {
                                         <tr>
                                             <td><strong><?php echo htmlspecialchars($coverage['area_name']); ?></strong></td>
                                             <td><?php echo htmlspecialchars($coverage['rider_name'] ?? 'Unassigned'); ?></td>
-                                            <td><span class="status <?php echo $coverage['status'] === 'inactive' ? 'inactive' : ''; ?>"><?php echo htmlspecialchars(ucfirst($coverage['status'])); ?></span></td>
                                             <td>
                                                 <form method="post" action="settings.php" class="coverage-form" style="grid-template-columns: 1fr 130px 110px; margin: 0;">
                                                     <input type="hidden" name="action" value="update_coverage" />
@@ -221,6 +220,7 @@ try {
                                                     </select>
                                                     <button type="submit">Save</button>
                                                 </form>
+                                            </td>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>

@@ -5,6 +5,8 @@ requireRole(['admin']);
 
 $message = '';
 $messageType = 'success';
+$riderTotals = [];
+$deliveryRecords = [];
 
 try {
     $pdo = getDbConnection();
@@ -38,8 +40,12 @@ try {
     }
 
     $users = $pdo->query('SELECT id, name, email, role, created_at FROM users ORDER BY created_at DESC')->fetchAll();
+    $riderTotals = $pdo->query('SELECT u.id, u.name, u.email, COUNT(o.id) AS total_deliveries, MAX(o.updated_at) AS last_delivery_at FROM users u LEFT JOIN orders o ON o.rider_id = u.id AND o.status = "Delivered" WHERE u.role = "rider" GROUP BY u.id, u.name, u.email ORDER BY total_deliveries DESC, u.name ASC')->fetchAll();
+    $deliveryRecords = $pdo->query('SELECT o.id AS order_id, u.name AS rider_name, dc.area_name, o.delivery_address, o.updated_at AS delivered_at FROM orders o INNER JOIN users u ON u.id = o.rider_id LEFT JOIN delivery_coverages dc ON dc.id = o.delivery_coverage_id WHERE u.role = "rider" AND o.status = "Delivered" ORDER BY o.updated_at DESC')->fetchAll();
 } catch (Throwable $e) {
     $users = [];
+    $riderTotals = [];
+    $deliveryRecords = [];
     $message = 'Unable to load users right now.';
     $messageType = 'error';
 }
@@ -113,6 +119,9 @@ try {
         .message.error { background: #fff1f0; color: #8f2424; }
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 12px 8px; border-bottom: 1px solid rgba(17,17,17,0.08); text-align: left; }
+        .records-panel { margin-top: 20px; }
+        .section-note { color: #5b5b5b; margin-top: -8px; }
+        .empty-records { color: #5b5b5b; padding: 12px 0; }
         .badge { display: inline-block; padding: 5px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; }
         .badge.admin { background: #dff7eb; color: #1d6d40; }
         .badge.customer { background: #e0f2fe; color: #0f4c81; }
@@ -202,6 +211,62 @@ try {
                                 <?php endif; ?>
                             </tbody>
                         </table>
+                    </div>
+
+                    <div class="panel records-panel">
+                        <h2>Rider delivery records</h2>
+                        <p class="section-note">Completed deliveries are counted from orders marked Delivered by the rider.</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Rider</th>
+                                    <th>Total deliveries</th>
+                                    <th>Last delivery date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (empty($riderTotals)): ?>
+                                    <tr><td colspan="3">No riders found.</td></tr>
+                                <?php else: ?>
+                                    <?php foreach ($riderTotals as $rider): ?>
+                                        <tr>
+                                            <td>
+                                                <strong><?php echo htmlspecialchars($rider['name']); ?></strong><br>
+                                                <span class="section-note"><?php echo htmlspecialchars($rider['email']); ?></span>
+                                            </td>
+                                            <td><?php echo (int) $rider['total_deliveries']; ?></td>
+                                            <td><?php echo $rider['last_delivery_at'] ? htmlspecialchars(date('d M Y H:i', strtotime($rider['last_delivery_at']))) : 'No completed deliveries'; ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+
+                        <h3>Completed delivery dates</h3>
+                        <?php if (empty($deliveryRecords)): ?>
+                            <div class="empty-records">No completed delivery records yet.</div>
+                        <?php else: ?>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Order</th>
+                                        <th>Rider</th>
+                                        <th>Location</th>
+                                        <th>Completed date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($deliveryRecords as $record): ?>
+                                        <tr>
+                                            <td>#<?php echo (int) $record['order_id']; ?></td>
+                                            <td><?php echo htmlspecialchars($record['rider_name']); ?></td>
+                                            <td><?php echo htmlspecialchars($record['area_name'] ?: $record['delivery_address']); ?></td>
+                                            <td><?php echo htmlspecialchars(date('d M Y H:i', strtotime($record['delivered_at']))); ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        <?php endif; ?>
                     </div>
                 </div>
             </main>

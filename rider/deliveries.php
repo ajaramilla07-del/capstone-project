@@ -11,13 +11,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'updat
 
     if ($orderId > 0 && in_array($status, ['Ready for pickup', 'Out for delivery', 'Delivered'], true)) {
         $pdo = getDbConnection();
-        $stmt = $pdo->prepare('UPDATE orders SET status = :status WHERE id = :id AND rider_id = :rider_id');
+        $stmt = $pdo->prepare('UPDATE orders SET status = :status WHERE id = :id AND rider_id = :rider_id AND status <> "Delivered"');
         $stmt->execute([
             ':status' => $status,
             ':id' => $orderId,
             ':rider_id' => (int) currentUser()['id'],
         ]);
-        $message = 'Delivery status updated.';
+        $message = $stmt->rowCount() > 0 ? 'Delivery status updated.' : 'This delivery is already completed.';
     }
 }
 
@@ -127,6 +127,11 @@ $deliveries = $stmt->fetchAll();
             font-weight: 700;
             cursor: pointer;
         }
+        button.completed {
+            background: #dfe8e1;
+            color: #55705c;
+            cursor: not-allowed;
+        }
         .logout {
             color: var(--text);
             text-decoration: none;
@@ -171,16 +176,17 @@ $deliveries = $stmt->fetchAll();
                             </div>
                         </div>
 
+                        <?php $isCompleted = normalizeOrderStatus((string) ($delivery['status'] ?? '')) === 'Delivered'; ?>
                         <form method="post" action="deliveries.php">
                             <input type="hidden" name="action" value="update_delivery" />
                             <input type="hidden" name="order_id" value="<?php echo (int) $delivery['id']; ?>" />
-                            <select name="status">
+                            <select name="status" <?php echo $isCompleted ? 'disabled' : ''; ?>>
                                 <?php foreach (['Ready for pickup', 'Out for delivery', 'Delivered'] as $status): ?>
                                     <?php $optionValue = normalizeOrderStatus($status); ?>
                                     <option value="<?php echo htmlspecialchars($optionValue); ?>" <?php echo ($optionValue === normalizeOrderStatus((string) ($delivery['status'] ?? 'Ready for pickup'))) ? 'selected' : ''; ?>><?php echo htmlspecialchars($status); ?></option>
                                 <?php endforeach; ?>
                             </select>
-                            <button type="submit">Update status</button>
+                            <button type="submit" class="<?php echo $isCompleted ? 'completed' : ''; ?>" <?php echo $isCompleted ? 'disabled' : ''; ?>><?php echo $isCompleted ? 'Completed' : 'Update status'; ?></button>
                         </form>
                     </div>
                 <?php endforeach; ?>
