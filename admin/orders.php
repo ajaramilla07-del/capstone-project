@@ -20,15 +20,39 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Orders</title>
     <style>
-        :root { --bg:#f5f7f3; --panel:#ffffff; --line:rgba(17,17,17,0.08); --green:#5ca66e; --green-dark:#3f8a56; --text:#111; --muted:#5b5b5b; --soft:#eef7f0; --warning:#fff4d6; }
-        * { box-sizing:border-box; }
-        body { margin:0; font-family:Arial,sans-serif; background:var(--bg); color:var(--text); padding:24px; }
-        .wrap { max-width:1200px; margin:0 auto; }
-        .topbar { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:20px; flex-wrap:wrap; }
-        .nav { display:flex; gap:10px; flex-wrap:wrap; }
-        .link { display:inline-block; padding:10px 14px; border-radius:10px; text-decoration:none; font-weight:700; background:#fff; border:1px solid var(--line); color:var(--text); }
-        .panel { background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:20px; box-shadow:0 12px 32px rgba(17,17,17,0.04); }
-        .message { background:var(--soft); color:#184d2d; border:1px solid rgba(92,166,110,0.2); border-radius:10px; padding:10px 12px; margin-bottom:16px; font-weight:600; }
+        :root {
+            --sidebar-bg: #2e5d2f;
+            --sidebar-dark: #234a28;
+            --bg-green: #dcead9;
+            --text: #1e1e1e;
+            --muted: #4b4e4a;
+            --line: rgba(58, 81, 58, 0.18);
+            --white: #ffffff;
+            --soft: #eef7f0;
+            --warning: #fff4d6;
+        }
+        * { box-sizing: border-box; }
+        html, body { margin: 0; min-height: 100%; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; background: var(--bg-green); color: var(--text); }
+        body { padding: 0; }
+        .dashboard-shell { display: flex; min-height: 100vh; }
+        .sidebar { width: 220px; background: linear-gradient(180deg, var(--sidebar-bg), var(--sidebar-dark)); color: #edf3f8; padding: 18px 0 10px; }
+        .logo-wrap { display: flex; justify-content: center; padding: 12px 0 18px; }
+        .logo-mark { width: 82px; height: 82px; border-radius: 50%; background: rgba(255,255,255,0.08); position: relative; }
+        .logo-mark::before { content: ""; width: 38px; height: 38px; background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(255,255,255,0.3)); border-radius: 12px; transform: rotate(45deg); position: absolute; left: 22px; top: 22px; }
+        .logo-mark::after { content: ""; width: 16px; height: 16px; border: 3px solid #2b3e4d; border-top-color: transparent; border-left-color: transparent; position: absolute; left: 31px; top: 31px; border-radius: 4px; transform: rotate(45deg); }
+        .nav { display: flex; flex-direction: column; gap: 10px; padding: 0 10px; }
+        .nav-item { display: flex; align-items: center; gap: 12px; padding: 14px 12px; border-radius: 10px; color: rgba(255,255,255,0.9); text-decoration: none; font-weight: 700; }
+        .nav-item.active, .nav-item:hover { background: rgba(255,255,255,0.08); }
+        .nav-icon { width: 12px; height: 12px; border-radius: 4px; background: rgba(255,255,255,0.7); display: inline-block; }
+        .content { flex: 1; background: rgba(255,255,255,0.08); }
+        .topbar { height: 78px; display: flex; align-items: center; justify-content: space-between; padding: 0 26px; background: rgba(255,255,255,0.75); border-bottom: 1px solid rgba(17,17,17,0.08); }
+        .topbar-title { display: flex; align-items: center; gap: 12px; font-weight: 700; }
+        .burger { width: 18px; height: 14px; display: grid; gap: 3px; }
+        .burger span { display: block; height: 2px; background: #1a2321; border-radius: 2px; }
+        .main-inner { padding: 24px; }
+        .wrap { max-width: 1200px; margin: 0 auto; }
+        .panel { background: var(--white); border: 1px solid var(--line); border-radius: 18px; padding: 20px; box-shadow: 0 12px 32px rgba(17,17,17,0.04); }
+        .message { background: var(--soft); color:#184d2d; border:1px solid rgba(92,166,110,0.2); border-radius:10px; padding:10px 12px; margin-bottom:16px; font-weight:600; }
         table { width:100%; border-collapse:collapse; }
         th, td { text-align:left; padding:12px 8px; border-bottom:1px solid var(--line); vertical-align:top; }
         th { font-size:0.8rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); }
@@ -37,55 +61,69 @@ try {
         .badge.preparing { background:var(--soft); color:#184d2d; }
         .badge.ready-for-pickup, .badge.out-for-delivery { background:#e0f2fe; color:#0f4c81; }
         .badge.delivered { background:#dcfce7; color:#166534; }
-        @media (max-width:800px) { table { display:block; overflow-x:auto; } }
+        @media (max-width: 900px) { .dashboard-shell { flex-direction: column; } .sidebar { width: 100%; } table { display:block; overflow-x:auto; } }
     </style>
 </head>
 <body>
-    <div class="wrap">
-        <div class="topbar">
-            <div><h1>Admin Orders</h1></div>
-            <div class="nav">
-                <a class="link" href="dashboard.php">Dashboard</a>
-                <a class="link" href="products.php">Products</a>
-                <a class="link" href="../logout.php">Logout</a>
-            </div>
-        </div>
+    <div class="dashboard-shell">
+        <aside class="sidebar">
+            <div class="logo-wrap"><div class="logo-mark" aria-label="Logo"></div></div>
+            <nav class="nav" aria-label="Sidebar navigation">
+                <a class="nav-item" href="dashboard.php"><span class="nav-icon"></span>Dashboard</a>
+                <a class="nav-item" href="sales.php"><span class="nav-icon"></span>Sales</a>
+                <a class="nav-item" href="growth.php"><span class="nav-icon"></span>Growth</a>
+                <a class="nav-item" href="products.php"><span class="nav-icon"></span>Products</a>
+                <a class="nav-item active" href="orders.php"><span class="nav-icon"></span>Orders</a>
+                <a class="nav-item" href="users.php"><span class="nav-icon"></span>Users</a>
+                <a class="nav-item" href="settings.php"><span class="nav-icon"></span>Settings</a>
+            </nav>
+        </aside>
 
-        <?php if ($message): ?><div class="message"><?php echo htmlspecialchars($message); ?></div><?php endif; ?>
+        <div class="content">
+            <header class="topbar">
+                <div class="topbar-title"><span class="burger" aria-label="Menu button"><span></span><span></span><span></span></span><span>Orders</span></div>
+                <div><a href="../logout.php" style="text-decoration:none; color:#111; font-weight:700;">Logout</a></div>
+            </header>
 
-        <div class="panel">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Order</th>
-                        <th>Customer</th>
-                        <th>Area</th>
-                        <th>Rider</th>
-                        <th>Total</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (empty($orders)): ?>
-                        <tr><td colspan="6">No orders found.</td></tr>
-                    <?php else: ?>
-                        <?php foreach ($orders as $order): ?>
-                            <?php $statusValue = normalizeOrderStatus((string) ($order['status'] ?? 'Pending')); $statusClass = strtolower(str_replace(' ', '-', $statusValue)); ?>
-                            <tr>
-                                <td>
-                                    <strong>#<?php echo (int) $order['id']; ?></strong><br>
-                                    <span style="color:var(--muted); font-size:0.85rem;"><?php echo htmlspecialchars(date('d M Y', strtotime($order['created_at']))); ?></span>
-                                </td>
-                                <td><?php echo htmlspecialchars($order['customer_name'] ?? 'Customer'); ?></td>
-                                <td><?php echo htmlspecialchars($order['area_name'] ?: 'N/A'); ?></td>
-                                <td><?php echo htmlspecialchars($order['rider_name'] ?: 'Unassigned'); ?></td>
-                                <td>₱<?php echo number_format((float) $order['total_amount'], 0); ?></td>
-                                <td><span class="badge <?php echo htmlspecialchars($statusClass); ?>"><?php echo htmlspecialchars($statusValue); ?></span></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+            <main class="main-inner">
+                <div class="wrap">
+                    <?php if ($message): ?><div class="message"><?php echo htmlspecialchars($message); ?></div><?php endif; ?>
+                    <div class="panel">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Order</th>
+                                    <th>Customer</th>
+                                    <th>Area</th>
+                                    <th>Rider</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (empty($orders)): ?>
+                                    <tr><td colspan="6">No orders found.</td></tr>
+                                <?php else: ?>
+                                    <?php foreach ($orders as $order): ?>
+                                        <?php $statusValue = normalizeOrderStatus((string) ($order['status'] ?? 'Pending')); $statusClass = strtolower(str_replace(' ', '-', $statusValue)); ?>
+                                        <tr>
+                                            <td>
+                                                <strong>#<?php echo (int) $order['id']; ?></strong><br>
+                                                <span style="color:var(--muted); font-size:0.85rem;"><?php echo htmlspecialchars(date('d M Y', strtotime($order['created_at']))); ?></span>
+                                            </td>
+                                            <td><?php echo htmlspecialchars($order['customer_name'] ?? 'Customer'); ?></td>
+                                            <td><?php echo htmlspecialchars($order['area_name'] ?: 'N/A'); ?></td>
+                                            <td><?php echo htmlspecialchars($order['rider_name'] ?: 'Unassigned'); ?></td>
+                                            <td>₱<?php echo number_format((float) $order['total_amount'], 0); ?></td>
+                                            <td><span class="badge <?php echo htmlspecialchars($statusClass); ?>"><?php echo htmlspecialchars($statusValue); ?></span></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
         </div>
     </div>
 </body>

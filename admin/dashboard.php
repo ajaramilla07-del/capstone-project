@@ -53,7 +53,7 @@ try {
 
     $riderPerformance = $pdo->query('SELECT u.name, COUNT(o.id) AS deliveries, COALESCE(SUM(o.total_amount), 0) AS revenue FROM users u LEFT JOIN orders o ON o.rider_id = u.id WHERE u.role = "rider" GROUP BY u.id, u.name ORDER BY deliveries DESC, revenue DESC LIMIT 5')->fetchAll();
 
-    $deliveryAreas = $pdo->query('SELECT area_name, rider_id, status FROM delivery_coverages WHERE status = "active" ORDER BY area_name ASC')->fetchAll();
+    $deliveryAreas = $pdo->query('SELECT dc.area_name, dc.rider_id, dc.status, u.name AS rider_name FROM delivery_coverages dc LEFT JOIN users u ON u.id = dc.rider_id WHERE dc.status = "active" ORDER BY dc.area_name ASC')->fetchAll();
 
     $revenueTrend = $pdo->query('SELECT DATE(created_at) AS sale_day, COALESCE(SUM(total_amount), 0) AS revenue FROM orders WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 6 DAY) GROUP BY DATE(created_at) ORDER BY sale_day ASC')->fetchAll();
 
@@ -1047,6 +1047,7 @@ try {
                                     <div class="area-item">
                                         <div>
                                             <strong><?php echo htmlspecialchars($area['area_name']); ?></strong>
+                                            <span class="muted"><?php echo htmlspecialchars($area['rider_name'] ?? 'Unassigned'); ?></span>
                                         </div>
                                         <span class="status-pill preparing">Active</span>
                                     </div>

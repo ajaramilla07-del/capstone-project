@@ -9,7 +9,12 @@ $categories = [];
 $selectedCategoryId = max(0, (int) ($_GET['category_id'] ?? 0));
 
 try {
-    $categories = $pdo->query('SELECT CategoryID AS id, CategoryName AS name FROM categories ORDER BY CategoryName ASC')->fetchAll();
+    $categoryColumns = $pdo->query('SHOW COLUMNS FROM categories')->fetchAll(PDO::FETCH_COLUMN);
+    $usesNorthwindCategories = in_array('CategoryID', $categoryColumns, true) && in_array('CategoryName', $categoryColumns, true);
+    $categoryQuery = $usesNorthwindCategories
+        ? 'SELECT CategoryID AS id, CategoryName AS name FROM categories ORDER BY CategoryName ASC'
+        : 'SELECT id, name FROM categories ORDER BY name ASC';
+    $categories = $pdo->query($categoryQuery)->fetchAll();
 
     if ($selectedCategoryId > 0) {
         $stmt = $pdo->prepare('SELECT * FROM products WHERE status = "active" AND category_id = :category_id ORDER BY id ASC');
