@@ -68,11 +68,11 @@ CREATE TABLE IF NOT EXISTS order_details (
 
 INSERT INTO users (name, email, password, role)
 VALUES
-('Admin User', 'admin@example.com', '$2y$12$dqw.4.tEjedInxn8lz6EyuM.7DWwnqyzmsWOwdjm9RRsCl36krFqi', 'admin'),
-('Staff User', 'staff@example.com', '$2y$12$nxDRjge13ZwLIcYnx/v0e.4CIdPqfHxRnsQk5ZhRIwUKCpzmFFNjC', 'staff'),
-('Rider User', 'rider@example.com', '$2y$12$nxDRjge13ZwLIcYnx/v0e.4CIdPqfHxRnsQk5ZhRIwUKCpzmFFNjC', 'rider'),
-('Customer User', 'customer@example.com', '$2y$12$nxDRjge13ZwLIcYnx/v0e.4CIdPqfHxRnsQk5ZhRIwUKCpzmFFNjC', 'customer')
-ON DUPLICATE KEY UPDATE email = email;
+('Admin User', 'admin@example.com', '$2y$12$kg1/VMoX8K4LXqad/nUlo.9M8uo023DoBLSB.IbpcUs.ky9NXPAFW', 'admin'),
+('Staff User', 'staff@example.com', '$2y$12$LvsipCcMR3V1i0DyLTz7CunxFC.thlggvw7GnT6..7XDDZaqnubwW', 'staff'),
+('Rider User', 'rider@example.com', '$2y$12$nWGsDIBA9.no10i.68wezO45Be4bunoYDrdqXOxJB6FkykI/gSbSW', 'rider'),
+('Customer User', 'customer@example.com', '$2y$12$riyt5ikqJe6SSa6JLsrg5.OapS5jH3x7ZrIT8bhOk4..i9hoaYyWS', 'customer')
+ON DUPLICATE KEY UPDATE name = VALUES(name), password = VALUES(password), role = VALUES(role);
 
 INSERT INTO categories (name)
 VALUES ('Pizza'), ('Seafood'), ('Burger'), ('Drinks')
