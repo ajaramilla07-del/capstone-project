@@ -795,6 +795,7 @@ try {
                 <a class="nav-item" href="sales.php"><span class="nav-icon sales"></span>Sales</a>
                 <a class="nav-item" href="growth.php"><span class="nav-icon growth"></span>Growth</a>
                 <a class="nav-item" href="products.php"><span class="nav-icon project"></span>Products</a>
+                <a class="nav-item" href="locations.php"><span class="nav-icon location"></span>Locations</a>
                 <a class="nav-item" href="orders.php"><span class="nav-icon sales"></span>Orders</a>
                 <a class="nav-item" href="users.php"><span class="nav-icon user"></span>Users</a>
                 <a class="nav-item" href="settings.php"><span class="nav-icon comments"></span>Settings</a>

@@ -142,6 +142,7 @@ try {
                 <a class="nav-item" href="sales.php"><span class="nav-icon"></span>Sales</a>
                 <a class="nav-item" href="growth.php"><span class="nav-icon"></span>Growth</a>
                 <a class="nav-item" href="products.php"><span class="nav-icon"></span>Products</a>
+                <a class="nav-item" href="locations.php"><span class="nav-icon"></span>Locations</a>
                 <a class="nav-item" href="orders.php"><span class="nav-icon"></span>Orders</a>
                 <a class="nav-item active" href="users.php"><span class="nav-icon"></span>Users</a>
                 <a class="nav-item" href="settings.php"><span class="nav-icon"></span>Settings</a>

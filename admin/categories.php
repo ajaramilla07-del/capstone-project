@@ -12,24 +12,34 @@ try {
     $usesNorthwindCategories = in_array('CategoryID', $categoryColumns, true) && in_array('CategoryName', $categoryColumns, true);
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $action = $_POST['action'] ?? 'create_category';
+        $categoryId = (int) ($_POST['category_id'] ?? 0);
         $name = trim((string) ($_POST['name'] ?? ''));
 
-        if ($name === '') {
+        if (($action === 'create_category' || $action === 'update_category') && ($name === '' || ($action === 'update_category' && $categoryId <= 0))) {
             $message = 'Category name is required.';
             $messageType = 'error';
         } else {
             try {
-                $insertQuery = $usesNorthwindCategories
-                    ? 'INSERT INTO categories (CategoryName) VALUES (:name)'
-                    : 'INSERT INTO categories (name) VALUES (:name)';
-                $stmt = $pdo->prepare($insertQuery);
-                $stmt->execute([':name' => $name]);
-                $categoryId = (int) $pdo->lastInsertId();
-                header('Location: products.php?category_id=' . $categoryId . '&category_added=1#product-form');
-                exit;
+                if ($action === 'delete_category') {
+                    $deleteQuery = $usesNorthwindCategories ? 'DELETE FROM categories WHERE CategoryID = :id' : 'DELETE FROM categories WHERE id = :id';
+                    $pdo->prepare($deleteQuery)->execute([':id' => $categoryId]);
+                    $message = 'Category deleted.';
+                } elseif ($action === 'update_category') {
+                    $updateQuery = $usesNorthwindCategories ? 'UPDATE categories SET CategoryName = :name WHERE CategoryID = :id' : 'UPDATE categories SET name = :name WHERE id = :id';
+                    $pdo->prepare($updateQuery)->execute([':name' => $name, ':id' => $categoryId]);
+                    $message = 'Category updated.';
+                } else {
+                    $insertQuery = $usesNorthwindCategories ? 'INSERT INTO categories (CategoryName) VALUES (:name)' : 'INSERT INTO categories (name) VALUES (:name)';
+                    $stmt = $pdo->prepare($insertQuery);
+                    $stmt->execute([':name' => $name]);
+                    $categoryId = (int) $pdo->lastInsertId();
+                    header('Location: products.php?category_id=' . $categoryId . '&category_added=1#product-form');
+                    exit;
+                }
             } catch (PDOException $exception) {
                 $message = $exception->getCode() === '23000'
-                    ? 'That category already exists.'
+                    ? 'That category already exists or is still used by products.'
                     : 'Unable to add the category right now.';
                 $messageType = 'error';
             }
@@ -104,7 +114,9 @@ try {
                 <a class="nav-item" href="dashboard.php"><span class="nav-icon"></span>Dashboard</a>
                 <a class="nav-item" href="sales.php"><span class="nav-icon"></span>Sales</a>
                 <a class="nav-item" href="growth.php"><span class="nav-icon"></span>Growth</a>
-                <a class="nav-item active" href="products.php"><span class="nav-icon"></span>Products</a>
+                <a class="nav-item" href="products.php"><span class="nav-icon"></span>Products</a>
+                <a class="nav-item active" href="categories.php"><span class="nav-icon"></span>Categories</a>
+                <a class="nav-item" href="locations.php"><span class="nav-icon"></span>Locations</a>
                 <a class="nav-item" href="orders.php"><span class="nav-icon"></span>Orders</a>
                 <a class="nav-item" href="users.php"><span class="nav-icon"></span>Users</a>
                 <a class="nav-item" href="settings.php"><span class="nav-icon"></span>Settings</a>
@@ -134,11 +146,29 @@ try {
                     <section class="panel">
                         <h2>Existing categories</h2>
                         <?php if ($categories): ?>
-                            <ul>
-                                <?php foreach ($categories as $category): ?>
-                                    <li><?php echo htmlspecialchars($category['name']); ?></li>
-                                <?php endforeach; ?>
-                            </ul>
+                            <table>
+                                <tbody>
+                                    <?php foreach ($categories as $category): ?>
+                                        <tr>
+                                            <td>
+                                                <form method="post" action="categories.php" style="display:flex; gap:8px;">
+                                                    <input type="hidden" name="action" value="update_category" />
+                                                    <input type="hidden" name="category_id" value="<?php echo (int) $category['id']; ?>" />
+                                                    <input type="text" name="name" value="<?php echo htmlspecialchars($category['name']); ?>" required />
+                                                    <button class="btn" type="submit">Update</button>
+                                                </form>
+                                            </td>
+                                            <td style="width:120px;">
+                                                <form method="post" action="categories.php" onsubmit="return confirm('Delete this category?');">
+                                                    <input type="hidden" name="action" value="delete_category" />
+                                                    <input type="hidden" name="category_id" value="<?php echo (int) $category['id']; ?>" />
+                                                    <button class="btn" type="submit">Delete</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
                         <?php else: ?>
                             <p>No categories found.</p>
                         <?php endif; ?>
