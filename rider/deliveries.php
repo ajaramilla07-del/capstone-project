@@ -9,15 +9,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'updat
     $orderId = (int) ($_POST['order_id'] ?? 0);
     $status = normalizeOrderStatus(trim($_POST['status'] ?? ''));
 
-    if ($orderId > 0 && in_array($status, ['Ready for pickup', 'Out for delivery', 'Delivered'], true)) {
+    if ($orderId > 0 && in_array($status, ['Out for delivery', 'Delivered'], true)) {
         $pdo = getDbConnection();
-        $stmt = $pdo->prepare('UPDATE orders SET status = :status WHERE id = :id AND rider_id = :rider_id AND status <> "Delivered"');
+
+        if ($status === 'Out for delivery') {
+            $stmt = $pdo->prepare('UPDATE orders SET status = :status WHERE id = :id AND rider_id = :rider_id AND status = "Ready for pickup"');
+        } else {
+            $stmt = $pdo->prepare('UPDATE orders SET status = :status WHERE id = :id AND rider_id = :rider_id AND status = "Out for delivery"');
+        }
+
         $stmt->execute([
             ':status' => $status,
             ':id' => $orderId,
             ':rider_id' => (int) currentUser()['id'],
         ]);
-        $message = $stmt->rowCount() > 0 ? 'Delivery status updated.' : 'This delivery is already completed.';
+        $message = $stmt->rowCount() > 0 ? 'Delivery status updated.' : 'This delivery is not ready for that status change.';
     }
 }
 
@@ -176,17 +182,24 @@ $deliveries = $stmt->fetchAll();
                             </div>
                         </div>
 
-                        <?php $isCompleted = normalizeOrderStatus((string) ($delivery['status'] ?? '')) === 'Delivered'; ?>
+                        <?php
+                        $deliveryStatus = normalizeOrderStatus((string) ($delivery['status'] ?? 'Pending'));
+                        $isCompleted = $deliveryStatus === 'Delivered';
+                        $canStartDelivery = $deliveryStatus === 'Ready for pickup';
+                        $canCompleteDelivery = $deliveryStatus === 'Out for delivery';
+                        ?>
                         <form method="post" action="deliveries.php">
                             <input type="hidden" name="action" value="update_delivery" />
                             <input type="hidden" name="order_id" value="<?php echo (int) $delivery['id']; ?>" />
-                            <select name="status" <?php echo $isCompleted ? 'disabled' : ''; ?>>
-                                <?php foreach (['Ready for pickup', 'Out for delivery', 'Delivered'] as $status): ?>
-                                    <?php $optionValue = normalizeOrderStatus($status); ?>
-                                    <option value="<?php echo htmlspecialchars($optionValue); ?>" <?php echo ($optionValue === normalizeOrderStatus((string) ($delivery['status'] ?? 'Ready for pickup'))) ? 'selected' : ''; ?>><?php echo htmlspecialchars($status); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                            <button type="submit" class="<?php echo $isCompleted ? 'completed' : ''; ?>" <?php echo $isCompleted ? 'disabled' : ''; ?>><?php echo $isCompleted ? 'Completed' : 'Update status'; ?></button>
+                            <?php if ($canStartDelivery): ?>
+                                <input type="hidden" name="status" value="Out for delivery" />
+                                <button type="submit">Start delivery</button>
+                            <?php elseif ($canCompleteDelivery): ?>
+                                <input type="hidden" name="status" value="Delivered" />
+                                <button type="submit" class="check-btn" title="Mark as delivered">✓ Mark delivered</button>
+                            <?php else: ?>
+                                <button type="button" class="completed" disabled><?php echo $isCompleted ? 'Completed' : 'Waiting for staff'; ?></button>
+                            <?php endif; ?>
                         </form>
                     </div>
                 <?php endforeach; ?>

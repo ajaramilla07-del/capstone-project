@@ -18,6 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $user = $stmt->fetch();
 
             if ($user && password_verify($password, $user['password'])) {
+                session_regenerate_id(true);
+                $_SESSION = [];
                 $_SESSION['user'] = [
                     'id' => (int) $user['id'],
                     'name' => $user['name'],

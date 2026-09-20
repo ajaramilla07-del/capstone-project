@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'place
                 }
 
                 $_SESSION['cart'] = [];
-                header('Location: orders.php');
+                header('Location: /customer/orders.php');
                 exit;
             }
         } catch (Throwable $e) {

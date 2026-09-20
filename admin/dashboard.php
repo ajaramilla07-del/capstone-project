@@ -486,27 +486,58 @@ try {
         }
 
         .chart-card {
-            background: rgba(255,255,255,0.82);
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(0,0,0,0.04);
-            padding: 20px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(240,247,242,0.82));
+            border-radius: 18px;
+            box-shadow: 0 16px 36px rgba(31, 56, 39, 0.08);
+            border: 1px solid rgba(74, 117, 82, 0.12);
+            padding: 22px 22px 18px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-card::before {
+            content: "";
+            position: absolute;
+            inset: 0 auto auto 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(110, 170, 118, 0.08), transparent 30%);
+            pointer-events: none;
         }
 
         .chart-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
             font-weight: 700;
+            position: relative;
+            z-index: 1;
+            color: var(--text);
+        }
+
+        .chart-header span {
+            font-size: 1rem;
+            letter-spacing: 0.01em;
+        }
+
+        .chart-header strong {
+            font-size: 1.08rem;
+            color: #234d30;
         }
 
         .chart-bars {
+            position: relative;
             display: flex;
             align-items: flex-end;
-            gap: 10px;
-            height: 170px;
-            padding-top: 18px;
+            gap: 16px;
+            height: 190px;
+            padding: 12px 6px 0;
+            z-index: 1;
+            background:
+                linear-gradient(to top, rgba(49, 93, 61, 0.12) 1px, transparent 1px);
+            background-size: 100% 25%;
+            border-radius: 14px;
         }
 
         .chart-bar-wrap {
@@ -516,22 +547,31 @@ try {
             justify-content: flex-end;
             align-items: center;
             height: 100%;
-            gap: 8px;
+            gap: 10px;
+            min-width: 0;
         }
 
         .chart-bar {
             width: 100%;
-            border-radius: 10px 10px 0 0;
-            min-height: 12px;
-            background: linear-gradient(180deg, #74b87d, #2f6b3f);
-            box-shadow: inset 0 -8px 12px rgba(255,255,255,0.16);
+            max-width: 120px;
+            border-radius: 18px 18px 10px 10px;
+            min-height: 14px;
+            background: linear-gradient(180deg, #79bc7e 0%, #4a8d5e 40%, #2f6b3f 100%);
+            box-shadow: inset 0 -12px 18px rgba(255,255,255,0.12), 0 10px 20px rgba(58, 111, 76, 0.18);
+            border: 1px solid rgba(29, 78, 47, 0.08);
+            transition: transform 0.2s ease;
+        }
+
+        .chart-bar:hover {
+            transform: translateY(-2px);
         }
 
         .chart-day {
-            font-size: 0.7rem;
+            font-size: 0.72rem;
             color: var(--muted);
             text-transform: uppercase;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.12em;
+            font-weight: 700;
         }
 
         .metric-card {
